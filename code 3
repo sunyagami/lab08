@@ -1,0 +1,33 @@
+#include <LiquidCrystal.h>
+#include <Ultrasonic.h>
+
+#define TRIGGER 10
+#define ECHO 9
+Ultrasonic ultra(TRIGGER,ECHO);
+LiquidCrystal lcd(12,11,17,16,15,14);
+void setup() {
+  pinMode(2,INPUT_PULLUP);
+  pinMode(6,INPUT_PULLUP);
+  lcd.begin(16,2);
+  attachInterrupt(2,int0,RISING);
+}
+
+void loop() 
+{
+  if(!digitalRead(6))
+    interrupts();
+  else
+    noInterrupts();
+}
+
+void int0()
+{
+  lcd.clear();
+  float cmMsec,inMsec;
+  long microsec = ultra.timing();
+  cmMsec = ultra.convert(microsec,Ultrasonic::CM);
+
+  lcd.print("MS:"); lcd.print(microsec);
+  lcd.setCursor(0,1);
+  lcd.print("CM:"); lcd.print(cmMsec); 
+}
